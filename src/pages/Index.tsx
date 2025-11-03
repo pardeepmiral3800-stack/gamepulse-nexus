@@ -51,6 +51,9 @@ const Index = () => {
             src={heroImage} 
             alt="Gaming hero" 
             className="w-full h-full object-cover opacity-40"
+            fetchPriority="high"
+            width="1920"
+            height="1080"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
         </div>

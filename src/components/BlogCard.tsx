@@ -22,6 +22,9 @@ const BlogCard = ({ id, title, excerpt, category, date, readTime, image }: BlogC
             src={image}
             alt={title}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            loading="lazy"
+            width="640"
+            height="512"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           <Badge className="absolute top-4 left-4 bg-primary/90 hover:bg-primary">
