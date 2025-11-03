@@ -7,6 +7,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Mail, MessageSquare, Send } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { z } from "zod";
+
+const contactSchema = z.object({
+  name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
+  email: z.string().trim().email("Invalid email address").max(255, "Email must be less than 255 characters"),
+  subject: z.string().trim().min(1, "Subject is required").max(200, "Subject must be less than 200 characters"),
+  message: z.string().trim().min(1, "Message is required").max(5000, "Message must be less than 5000 characters"),
+});
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -16,20 +24,42 @@ const Contact = () => {
     message: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    setErrors({});
+    
+    // Validate form data
+    try {
+      const validatedData = contactSchema.parse(formData);
+      setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      toast({
-        title: "Message Sent!",
-        description: "We'll get back to you as soon as possible.",
-      });
-      setFormData({ name: "", email: "", subject: "", message: "" });
-      setIsLoading(false);
-    }, 1000);
+      // Simulate API call
+      setTimeout(() => {
+        toast({
+          title: "Message Sent!",
+          description: "We'll get back to you as soon as possible.",
+        });
+        setFormData({ name: "", email: "", subject: "", message: "" });
+        setIsLoading(false);
+      }, 1000);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const fieldErrors: Record<string, string> = {};
+        error.errors.forEach((err) => {
+          if (err.path[0]) {
+            fieldErrors[err.path[0].toString()] = err.message;
+          }
+        });
+        setErrors(fieldErrors);
+        toast({
+          title: "Validation Error",
+          description: "Please check the form for errors.",
+          variant: "destructive",
+        });
+      }
+    }
   };
 
   const handleChange = (
@@ -108,10 +138,14 @@ const Contact = () => {
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
-                        required
                         placeholder="Your name"
+                        maxLength={100}
                         className="bg-background border-border"
+                        aria-invalid={!!errors.name}
                       />
+                      {errors.name && (
+                        <p className="text-sm text-destructive">{errors.name}</p>
+                      )}
                     </div>
 
                     <div className="space-y-2">
@@ -122,10 +156,14 @@ const Contact = () => {
                         type="email"
                         value={formData.email}
                         onChange={handleChange}
-                        required
                         placeholder="your.email@example.com"
+                        maxLength={255}
                         className="bg-background border-border"
+                        aria-invalid={!!errors.email}
                       />
+                      {errors.email && (
+                        <p className="text-sm text-destructive">{errors.email}</p>
+                      )}
                     </div>
                   </div>
 
@@ -136,10 +174,14 @@ const Contact = () => {
                       name="subject"
                       value={formData.subject}
                       onChange={handleChange}
-                      required
                       placeholder="What's this about?"
+                      maxLength={200}
                       className="bg-background border-border"
+                      aria-invalid={!!errors.subject}
                     />
+                    {errors.subject && (
+                      <p className="text-sm text-destructive">{errors.subject}</p>
+                    )}
                   </div>
 
                   <div className="space-y-2">
@@ -149,11 +191,15 @@ const Contact = () => {
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
-                      required
                       placeholder="Tell us more..."
                       rows={6}
+                      maxLength={5000}
                       className="bg-background border-border resize-none"
+                      aria-invalid={!!errors.message}
                     />
+                    {errors.message && (
+                      <p className="text-sm text-destructive">{errors.message}</p>
+                    )}
                   </div>
 
                   <Button
