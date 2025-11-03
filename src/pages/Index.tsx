@@ -7,6 +7,9 @@ import Newsletter from "@/components/Newsletter";
 import BlogCard from "@/components/BlogCard";
 import gta5Image from "@/assets/gta5-card.jpg";
 import gta6Image from "@/assets/gta6-card.jpg";
+import gta5ImageWebp from "@/assets/gta5-card.webp";
+import gta6ImageWebp from "@/assets/gta6-card.webp";
+import heroImageWebp from "@/assets/hero-gaming.webp";
 
 const Index = () => {
   const featuredPosts = [
@@ -18,6 +21,7 @@ const Index = () => {
       date: "Jan 15, 2024",
       readTime: "8 min read",
       image: gta5Image,
+      imageWebp: gta5ImageWebp,
     },
     {
       id: "gta6-news",
@@ -27,6 +31,7 @@ const Index = () => {
       date: "Jan 12, 2024",
       readTime: "12 min read",
       image: gta6Image,
+      imageWebp: gta6ImageWebp,
     },
     {
       id: "gta5-secrets",
@@ -36,6 +41,7 @@ const Index = () => {
       date: "Jan 10, 2024",
       readTime: "6 min read",
       image: gta5Image,
+      imageWebp: gta5ImageWebp,
     },
   ];
 
@@ -46,14 +52,17 @@ const Index = () => {
       {/* Hero Section */}
       <section className="relative pt-20 min-h-[90vh] flex items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img 
-            src="/assets/hero-gaming.jpg"
-            alt="Gaming hero" 
-            className="w-full h-full object-cover opacity-40"
-            fetchPriority="high"
-            width="1920"
-            height="1080"
-          />
+          <picture>
+            <source srcSet={heroImageWebp} type="image/webp" />
+            <img 
+              src="/assets/hero-gaming.jpg"
+              alt="Gaming hero" 
+              className="w-full h-full object-cover opacity-40"
+              fetchPriority="high"
+              width="1920"
+              height="1080"
+            />
+          </picture>
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
         </div>
 

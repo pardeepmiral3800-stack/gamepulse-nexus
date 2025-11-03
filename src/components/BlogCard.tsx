@@ -10,22 +10,26 @@ interface BlogCardProps {
   date: string;
   readTime: string;
   image: string;
+  imageWebp?: string;
 }
 
-const BlogCard = ({ id, title, excerpt, category, date, readTime, image }: BlogCardProps) => {
+const BlogCard = ({ id, title, excerpt, category, date, readTime, image, imageWebp }: BlogCardProps) => {
   return (
     <Link to={`/blog/${id}`}>
       <article className="group bg-card rounded-xl overflow-hidden border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-glow">
         {/* Image */}
         <div className="relative overflow-hidden aspect-video">
-          <img
-            src={image}
-            alt={title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-            loading="lazy"
-            width="640"
-            height="512"
-          />
+          <picture>
+            {imageWebp && <source srcSet={imageWebp} type="image/webp" />}
+            <img
+              src={image}
+              alt={title}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              loading="lazy"
+              width="640"
+              height="512"
+            />
+          </picture>
           <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           <Badge className="absolute top-4 left-4 bg-primary/90 hover:bg-primary">
             {category}
