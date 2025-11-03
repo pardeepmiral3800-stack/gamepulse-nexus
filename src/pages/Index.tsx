@@ -5,7 +5,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Newsletter from "@/components/Newsletter";
 import BlogCard from "@/components/BlogCard";
-import heroImage from "@/assets/hero-gaming.jpg";
 import gta5Image from "@/assets/gta5-card.jpg";
 import gta6Image from "@/assets/gta6-card.jpg";
 
@@ -48,7 +47,7 @@ const Index = () => {
       <section className="relative pt-20 min-h-[90vh] flex items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
-            src={heroImage} 
+            src="/assets/hero-gaming.jpg"
             alt="Gaming hero" 
             className="w-full h-full object-cover opacity-40"
             fetchPriority="high"
